@@ -10,14 +10,13 @@ const jwt = require("jsonwebtoken");
 const User = db.user;
 const Role = db.role;
 
-
-
-
 const register = async (req, res) => {
   try {
     const { name, email, password, confirm_password } = req.body;
-    if (!name || !email || !password || password != confirm_password)
+    if (!name || !email || !password)
       res.status(400).json({ message: "Please fill all fields to register" });
+    if (password != confirm_password)
+      res.status(400).json({ message: "password is not matched" });
     const findEmail = await User.findOne({ email });
     if (findEmail)
       res.status(400).json({ message: "This email already exist" });
@@ -124,6 +123,33 @@ const formForgotPassword = async (req, res) => {
     password: password,
   });
 };
+
+const resetPassword = async (req, res) => {
+  const { body } = req;
+  if (!body.last_password || !body.new_password || !body.confirm_new_password)
+    return res
+      .status(400)
+      .json({ message: "Fill the all fields to reset your password" });
+  if (body.confirm_new_password != body.new_password)
+    res.status(400).json({ message: "password is not matched" });
+  const token_reset = storage("token");
+  const user_reset = await jwt.verify(token_reset, process.env.SECRET);
+  const find_user_reset = await User.findById(user_reset._id);
+  const verify_last_password = await bcrypt.compare(
+    body.last_password,
+    find_user_reset.password
+  );
+  if (!verify_last_password)
+    return res.status(400).json({ message: "Your password is incorrect" });
+    const hash_new_password = await bcrypt.hash(body.new_password, 10);
+    const update_reset_password = await User.updateOne(
+      { _id: find_user_reset._id },
+      { $set: { password: hash_new_password } }
+      );
+      if (!update_reset_password) res.status(400).json({ message: "Error" });
+      res.json({ message: "Your password is changed" });
+};
+
 const logout = async (req, res) => {
   storage.clear();
   res.send(true);
@@ -138,10 +164,10 @@ const logout = async (req, res) => {
 //   if (!verification_email) res.redirect("http://localhost:3000/login");
 // }
 
-
 module.exports = {
   register,
   login,
+  resetPassword,
   forgotPassword,
   verifyForgotPassword,
   formForgotPassword,

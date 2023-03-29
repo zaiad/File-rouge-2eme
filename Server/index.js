@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config()
 const authRoutes = require('./routes/authRoute/authRoute')
 const managerRoutes = require('./routes/userRoute/managerRoute')
+const livreurRoutes = require('./routes/userRoute/livreurRoutes')
 
 
 // Connection to database
@@ -18,6 +19,7 @@ app.use(express.static('public'))
 // Routers
 app.use("/api/auth", authRoutes);
 app.use("/manager", managerRoutes);
+app.use("/livreur", livreurRoutes);
 
 app.all("*", (req, res) => {
     res.send("Page not found");
