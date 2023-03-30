@@ -4,23 +4,23 @@ const Product = mongoose.model(
   "Product",
   new mongoose.Schema({
     title: String,
-    quantity:{
-      type:Number,
-      default:0
+    quantity: {
+      type: Number,
+      default: 0,
     },
     categorie: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Categorie"
-      }
+        ref: "Categorie",
+      },
     ],
     description: String,
     price: Number,
-    image: Array,
+    image: String,
     status: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   })
 );
 
