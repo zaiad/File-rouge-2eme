@@ -1,6 +1,6 @@
 const db = require("../../models");
 const bcrypt = require("bcrypt");
-const mailer = require("../../middlewares/mailer");
+const {main} = require("../../middlewares/mailer");
 const storage = require("local-storage");
 const jwt = require("jsonwebtoken");
 // const generateOtp = require("../../otp/generateOtp");
@@ -12,14 +12,16 @@ const Role = db.role;
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, confirm_password } = req.body;
+    const { name, email, password } = req.body;
     if (!name || !email || !password)
-      res.status(400).json({ message: "Please fill all fields to register" });
-    if (password != confirm_password)
-      res.status(400).json({ message: "password is not matched" });
+      return res
+        .status(400)
+        .json({ message: "Please fill all fields to register" });
+    // if (password != confirm_password)
+    //   return res.status(400).json({ message: "password is not matched" });
     const findEmail = await User.findOne({ email });
     if (findEmail)
-      res.status(400).json({ message: "This email already exist" });
+      return res.status(400).json({ message: "This email already exist" });
     if (!findEmail) {
       const hashPassword = await bcrypt.hash(password, 10);
       const clientRole = await Role.findOne({ name: "client" });
@@ -31,15 +33,19 @@ const register = async (req, res) => {
         verification: false,
         status: true,
       });
+
       if (user) {
-        mailer.main("register", user);
-        res.json({
+        main("register", user);
+        return res.json({
           message: "Successfully, Check your email to active your account",
           email: email,
           password: hashPassword,
         });
       }
-      if (!user) res.send("User not created try again");
+    else{
+      res.send("User not created try again");
+    }
+    
     }
   } catch (error) {
     // console.error(error);
@@ -141,13 +147,13 @@ const resetPassword = async (req, res) => {
   );
   if (!verify_last_password)
     return res.status(400).json({ message: "Your password is incorrect" });
-    const hash_new_password = await bcrypt.hash(body.new_password, 10);
-    const update_reset_password = await User.updateOne(
-      { _id: find_user_reset._id },
-      { $set: { password: hash_new_password } }
-      );
-      if (!update_reset_password) res.status(400).json({ message: "Error" });
-      res.json({ message: "Your password is changed" });
+  const hash_new_password = await bcrypt.hash(body.new_password, 10);
+  const update_reset_password = await User.updateOne(
+    { _id: find_user_reset._id },
+    { $set: { password: hash_new_password } }
+  );
+  if (!update_reset_password) res.status(400).json({ message: "Error" });
+  res.json({ message: "Your password is changed" });
 };
 
 const logout = async (req, res) => {

@@ -3,11 +3,13 @@ const router = require("express").Router();
 const categorieControllers = require("../../controllers/userController/categoryControllers");
 const userControllers = require("../../controllers/userController/userController");
 const productControllers = require('../../controllers/userController/produitControllers')
+const statistique = require('../../controllers/userController/statistiqueControllers')
 const uploadImage = require('../../utils/uploadImage')
 const errorHandller = require('../../middlewares/errorHandler')
 
 
 // Route of statistique
+router.get('/statistique',statistique.statistique)
 router.get("/get-users", userControllers.getUsers);
 router.get("/user/:id", userControllers.getOneUser);
 

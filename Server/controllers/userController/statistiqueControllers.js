@@ -1,0 +1,18 @@
+const Categorie = require('../../models/categoryModel'); 
+const Produit = require('../../models/productModel'); 
+const User = require('../../models/userModel')
+
+
+
+
+const statistique = async (req, res) => {
+    const categorie = await Categorie.count()
+    const produit = await Produit.count()
+    const user = await User.count()
+
+    res.json({categorie, produit, user})
+}
+
+module.exports = {
+    statistique
+}

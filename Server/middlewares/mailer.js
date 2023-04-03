@@ -51,7 +51,7 @@ async function main(method, user) {
                     Log here
                   </a>
                 </div>
-                `;
+            `;
   }
 
   let transporter = nodemailer.createTransport({
