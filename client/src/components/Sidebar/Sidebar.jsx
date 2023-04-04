@@ -18,9 +18,9 @@ function Sidebar() {
     const menus = [
         { name: "Home", link: "/", icon: BiHomeAlt },
         { name: "Statistique", link: "/statistique", icon: TfiStatsUp },
-        { name: "Users", link: "/Employe", icon: BiUserCircle },
+        { name: "Users", link: "/Users", icon: BiUserCircle },
         { name: "Categories", link: "/Categories", icon: CgOrganisation },
-        { name: "Product", link: "/Formation", icon: MdOutlineCategory },
+        { name: "Product", link: "/Product", icon: MdOutlineCategory },
     ]
     
     const [open, setOpen] = useState(true);

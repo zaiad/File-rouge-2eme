@@ -25,7 +25,7 @@ const updateCategory = async (req, res) => {
   const find_categorie = await Categorie.findById(id);
   if (!find_categorie) throw Error("Category not found");
   const second_categorie = await Categorie.findOne({ name: name });
-  if (second_categorie) throw Error(`${name} is already existed`);
+  if (second_categorie) return  res.status(400).json({message: `${name} is already existed`});
   const update_user = await Categorie.findByIdAndUpdate(
     { _id: id },
     { name: name }

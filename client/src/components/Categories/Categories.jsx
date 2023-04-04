@@ -17,54 +17,51 @@ function Category() {
     getCategory();
   }, []);
   const getCategory = async () => {
-    const categorie = await axios.get(
-      "http://localhost:8080/manager/categorie"
-    );
+    const categorie = await axios.get("http://localhost:8080/manager/category");
     setCategory(categorie.data.categorie);
   };
 
   const postData = async (e) => {
     e.preventDefault();
     const add_categorie = await axios.post(
-      "http://localhost:8080/manager/add-categorie",
+      "http://localhost:8080/manager/add-category",
       { name }
     );
     if (add_categorie.data.message) {
       toast.success(add_categorie.data.message);
+      getCategory();
       setShowModal(false);
-      //   setTimeout(() => {
-      //     window.location.reload(false);
-      //   }, "1000");
     } else toast.warning(add_categorie.data.message);
   };
 
   const onDelete = async (id) => {
     const delete_categorie = await axios.delete(
-      `http://localhost:8080/manager/deleteCategorie/${id}`
+      `http://localhost:8080/manager/delete-category/${id}`
     );
     if (delete_categorie.data.message) {
       toast.success(delete_categorie.data.message);
+      getCategory();
       setShowModal(false);
-      //   setTimeout(() => {
-      //     window.location.reload(false);
-      //   }, "1000");
     } else toast.warning(delete_categorie.data.message);
   };
 
   const updateCategorie = async (e) => {
     e.preventDefault();
-    // console.log(updatName)
-    const update_categorie = await axios.put(
-      `http://localhost:8080/manager/updateCategorie/${updatName._id}`,
-      updatName
-    );
-    if (update_categorie.data.message) {
-      toast.success(update_categorie.data.message);
-      setShowModal(false);
-      //   setTimeout(() => {
-      //     window.location.reload(false);
-      //   }, "1000");
-    } else toast.warning(update_categorie.data.message);
+    await axios
+      .put(
+        `http://localhost:8080/manager/update-category/${updatName._id}`,
+        updatName
+      )
+      .then((e) => {
+        if (e.data.message) {
+          toast.success(e.data.message);
+          setShowModal(false);
+          getCategory();
+        }
+      })
+      .catch((error) => {
+        toast.warning(error.response.data.message);
+      });
   };
 
   return (
@@ -76,7 +73,7 @@ function Category() {
             <div className="flex items-center justify-between py-4">
               <h1 className="ml-2 text-xl font-bold">Category</h1>
               {/* <input type="text" id="table-search-users" className="block w-40 p-2 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search For meal" /> */}
-              <button className="flex px-4 py-1 mr-4 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500">
+              <button className="flex px-4 py-1 mr-4 font-bold text-white border-2 rounded-md bg-gray-500 hover:text-gray-500 hover:bg-white border-gray-500">
                 {/* <IoIosAdd size={26} className="pt-1" /> */}
                 <button type="button" onClick={() => setShowModal(true)}>
                   Add Category
@@ -109,7 +106,7 @@ function Category() {
                               setUpdatName(data);
                               setUpdatModal(true);
                             }}
-                            className="text-xl hover:text-amber-500"
+                            className="text-xl hover:text-gray-400"
                           >
                             <AiOutlineEdit />
                           </button>
@@ -119,7 +116,7 @@ function Category() {
                               e.preventDefault();
                               onDelete(data._id);
                             }}
-                            className="text-xl hover:text-amber-500"
+                            className="text-xl hover:text-gray-400"
                           >
                             <AiOutlineDelete />
                           </button>
@@ -137,7 +134,7 @@ function Category() {
                               e.preventDefault();
                               onDelete(data._id);
                             }}
-                            className="text-xl hover:text-amber-500"
+                            className="text-xl hover:text-gray-400"
                           >
                             <BiReset />
                           </button>
@@ -146,7 +143,9 @@ function Category() {
                     </tr>
                   ))
                 ) : (
-                  <p className="font-bold justify-center items-center">No categories found.</p>
+                  <p className="font-bold justify-center items-center">
+                    No categories found.
+                  </p>
                 )}
               </tbody>
             </table>
@@ -167,7 +166,7 @@ function Category() {
                     <button
                       type="button"
                       onClick={() => setUpdatModal(false)}
-                      className="block w-6 h-6 text-2xl text-gray-300 outline-none focus:outline-none hover:text-amber-500"
+                      className="block w-6 h-6 text-2xl text-gray-300 outline-none focus:outline-none hover:text-gray-500"
                     >
                       x
                     </button>
@@ -196,7 +195,7 @@ function Category() {
                     <div className="flex items-center justify-center p-4 border-t border-solid rounded-b border-slate-200">
                       <button
                         onClick={postData}
-                        className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500"
+                        className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-gray-500 hover:text-gray-500 hover:bg-white border-gray-500"
                         type="submit"
                       >
                         Add Category
@@ -223,7 +222,7 @@ function Category() {
                     <button
                       type="button"
                       onClick={() => setUpdatModal(false)}
-                      className="block w-6 h-6 text-2xl text-gray-300 outline-none focus:outline-none hover:text-amber-500"
+                      className="block w-6 h-6 text-2xl text-gray-300 outline-none focus:outline-none hover:text-gray-500"
                     >
                       x
                     </button>
@@ -257,7 +256,7 @@ function Category() {
                     <div className="flex items-center justify-center p-4 border-t border-solid rounded-b border-slate-200">
                       <button
                         onClick={updateCategorie}
-                        className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500"
+                        className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-gray-400 hover:text-gray-400 hover:bg-white border-gray-400"
                         type="submit"
                       >
                         Update Category
