@@ -3,12 +3,15 @@ import { Input } from "../../accessoires/Inputs/Input";
 import { BsUnlock, BsPerson } from "react-icons/bs";
 import iphone_re from "../../assets/images/iphone_re.jpg";
 import axios from "axios";
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { Button } from "../../accessoires/Buttons/Button";
 import { ToastContainer, toast } from "react-toastify";
+import {login} from '../../actions/auth'
+import { Navigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch()
+  // const  islogin  = useSelector(state => state.auth.Login)
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -32,7 +35,11 @@ function Login() {
     //   .catch((error) => {
     //     toast.error(error.response.data.message || "An error occurred");
     //   });
+    dispatch(login(data))
   };
+//   if(islogin){
+//     return <Navigate to='/Home' />
+// }
 
   return (
     <div className="flex flex-wrap w-full">

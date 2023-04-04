@@ -7,7 +7,6 @@ export const register = (data) => (dispatch) =>{
     axios.post(`${API_URL}/register`, data)
     
         .then(e => {
-            console.log(e.data.message)
             if(e.data.message){
                 const data = JSON.stringify(e.data)
                 localStorage.setItem('register', data)
