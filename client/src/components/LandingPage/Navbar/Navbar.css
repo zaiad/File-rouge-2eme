@@ -1,0 +1,76 @@
+/* Transparent navbar by default */
+.navbar {
+    background-color: transparent;
+  }
+  
+  /* Change background color and show details on hover */
+  .navbar:hover {
+    background-color: #000;
+  }
+  
+  /* Change text color on hover */
+  .navbar:hover h2 {
+    color: #fff;
+  }
+  
+  /* Show details on hover */
+  .navbar:hover .details {
+    display: block;
+  }
+  
+  /* Hide details by default */
+  .details {
+    display: none;
+  }
+  
+  /* Style the details */
+  .details ul {
+    background-color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+  }
+  
+  .details li {
+    margin: 4px 0;
+  }
+
+  
+  .search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  
+  .search-dropdown.show {
+    max-height: 200px;
+  }
+
+  .sidebar {
+    width: 250px;
+  }
+  
+  .overlay {
+    opacity: 0.5;
+  }
+
+  @media (min-width: 768px) {
+    /* Hide menu button on large screens */
+    .hidden-md {
+      display: none;
+    }
+  }
+  
+  
+  
+  
+  
+  

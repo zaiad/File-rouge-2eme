@@ -1,9 +1,14 @@
 const Categorie = require('../../models/categoryModel'); 
 const Produit = require('../../models/productModel'); 
 const User = require('../../models/userModel')
+const Command = require('../../models/commandModel')
 
 
+const statistiqueLivreur =async (req, res) => {
+    const command = await Command.count()
 
+    res.json({command})
+}
 
 const statistique = async (req, res) => {
     const categorie = await Categorie.count()
@@ -14,5 +19,6 @@ const statistique = async (req, res) => {
 }
 
 module.exports = {
-    statistique
+    statistique,
+    statistiqueLivreur
 }

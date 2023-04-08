@@ -1,9 +1,17 @@
 import React from 'react'
-import Header from '../../components/Home/Header/Header'
+import Navbar from './Navbar/Navbar'
+import Hero from './Hero/Hero'
+import HeadlineCards from './HeadlineCards/HeadlineCards'
+import Products from './Products/Products'
 
 function LandingPage() {
   return (
-    <Header />
+    <div>
+      <Navbar />
+      <Hero />
+      <HeadlineCards />
+      <Products />
+    </div>
   )
 }
 

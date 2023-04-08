@@ -46,7 +46,10 @@ function Users() {
     e.preventDefault();
     axios
       .get(`http://localhost:8080/manager/user/${id}`)
-      .then((res) => {})
+      .then((res) => {
+        toast.success(res.data.message);
+        getData();
+      })
       .catch((err) => {
         toast.warning(err.response.data.message);
       });
